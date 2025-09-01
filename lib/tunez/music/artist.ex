@@ -14,8 +14,18 @@ defmodule Tunez.Music.Artist do
     end
 
     attribute :biography, :string
-    
+
     create_timestamp :inserted_at
     update_timestamp :updated_at
+  end
+
+  actions do
+    create :create do
+      accept [:name, :biography]
+    end
+
+    read :read do
+      primary? true
+    end
   end
 end
