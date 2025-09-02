@@ -3,6 +3,11 @@
   "build": {
     "dockerfile": "Dockerfile"
   },
+  "features": {
+    "ghcr.io/devcontainers/features/postgres:1": {
+      "version": "15"
+    }
+  },
   "hostRequirements": {
     "cpus": 8,
     "memory": "32gb",
