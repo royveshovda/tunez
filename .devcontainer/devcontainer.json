@@ -26,6 +26,6 @@
       ]
     }
   },
-  "postCreateCommand": "if [ -f .tool-versions ]; then mise install && mise exec -- mix local.hex --force && mise exec -- mix local.rebar --force; fi",
+  "postCreateCommand": "if [ -f .tool-versions ]; then mise install && eval \"$(mise activate bash)\" && mise exec -- mix local.hex --force && mise exec -- mix local.rebar --force; fi",
   "remoteUser": "root"
 }
