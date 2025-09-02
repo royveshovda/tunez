@@ -6,7 +6,7 @@
   "features": {
     "ghcr.io/itsmechlark/features/postgresql:1": {},
     "ghcr.io/rocker-org/devcontainer-features/apt-packages:1": {
-      "packages": "curl,git,unzip,build-essential,libssl-dev,automake,autoconf,libncurses5-dev"
+      "packages": "curl,git,unzip,build-essential,libssl-dev,automake,autoconf,libncurses5-dev,inotify-tools"
     },
     "ghcr.io/devcontainers-extra/features/mise:1": {}
   },
@@ -27,6 +27,7 @@
       ]
     }
   },
-  "postCreateCommand": "if [ -f .tool-versions ]; then mise install && eval \"$(mise activate bash)\" && mise exec -- mix local.hex --force && mise exec -- mix local.rebar --force; fi",
+  "postCreateCommand": "mise install && mise exec -- mix local.hex --force && mise exec -- mix local.rebar --force",
+  "postStartCommand": "eval \"$(mise activate bash)\"",
   "remoteUser": "root"
 }
