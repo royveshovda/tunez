@@ -27,7 +27,6 @@
       ]
     }
   },
-  "postCreateCommand": "mise install && mise exec -- mix local.hex --force && mise exec -- mix local.rebar --force",
-  "postStartCommand": "eval \"$(mise activate bash)\"",
+  "postCreateCommand": "chmod +x .devcontainer/setup-mise.sh && .devcontainer/setup-mise.sh",
   "remoteUser": "root"
 }
