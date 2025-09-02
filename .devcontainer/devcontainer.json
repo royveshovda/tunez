@@ -6,7 +6,11 @@
   "features": {
     "ghcr.io/devcontainers/features/postgres:1": {
       "version": "15"
-    }
+    },
+    "ghcr.io/rocker-org/devcontainer-features/apt-packages:1": {
+      "packages": "curl,git,unzip,build-essential,libssl-dev,automake,autoconf,libncurses5-dev"
+    },
+    "ghcr.io/devcontainers-extra/features/mise:1": {}
   },
   "hostRequirements": {
     "cpus": 8,
@@ -24,6 +28,6 @@
       ]
     }
   },
-  "postCreateCommand": "if [ -f .tool-versions ]; then mise install; fi",
+  "postCreateCommand": "if [ -f .tool-versions ]; then mise install && mise exec -- mix local.hex --force && mise exec -- mix local.rebar --force; fi",
   "remoteUser": "root"
 }
