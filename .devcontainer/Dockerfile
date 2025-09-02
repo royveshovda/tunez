@@ -6,7 +6,7 @@ FROM mcr.microsoft.com/devcontainers/base:ubuntu-24.04
 # Install dependencies
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-      curl git unzip build-essential libssl-dev automake autoconf libncurses5-dev libwxgtk3.0-gtk3-dev libgl1-mesa-dev libglu1-mesa-dev libpng-dev libssh-dev unixodbc-dev xsltproc fop libxml2-utils libffi-dev libgmp-dev && \
+      curl git unzip build-essential ca-certificates build-essential inotify-tools && \
     rm -rf /var/lib/apt/lists/*
 
 # Install mise (universal version manager)
