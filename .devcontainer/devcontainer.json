@@ -4,9 +4,7 @@
     "dockerfile": "Dockerfile"
   },
   "features": {
-    "ghcr.io/devcontainers/features/postgres:1": {
-      "version": "15"
-    },
+    "ghcr.io/itsmechlark/features/postgresql:1": {},
     "ghcr.io/rocker-org/devcontainer-features/apt-packages:1": {
       "packages": "curl,git,unzip,build-essential,libssl-dev,automake,autoconf,libncurses5-dev"
     },
