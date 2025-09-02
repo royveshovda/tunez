@@ -1,9 +1,13 @@
-defmodule Tunez.Music.Artist do
+defmodule Tunez.Music.Album do
   use Ash.Resource, otp_app: :tunez, domain: Tunez.Music, data_layer: AshPostgres.DataLayer
 
   postgres do
-    table "artists"
+    table "albums"
     repo Tunez.Repo
+
+    references do
+      reference :artist, index?: true
+    end
   end
 
   attributes do
@@ -13,30 +17,19 @@ defmodule Tunez.Music.Artist do
       allow_nil? false
     end
 
-    attribute :biography, :string
+    attribute :year_released, :integer do
+      allow_nil? false
+    end
+
+    attribute :cover_image_url, :string
 
     create_timestamp :inserted_at
     update_timestamp :updated_at
   end
 
   relationships do
-    has_many :albums, Tunez.Music.Album
-  end
-
-  actions do
-    create :create do
-      accept [:name, :biography]
-    end
-
-    read :read do
-      primary? true
-    end
-
-    update :update do
-      accept [:name, :biography]
-    end
-
-    destroy :destroy do
+    belongs_to :artist, Tunez.Music.Artist do
+      allow_nil? false
     end
   end
 end
