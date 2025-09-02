@@ -14,28 +14,8 @@ ENV MISE_VERSION=v2025.8.21
 RUN curl -sSL https://mise.run | bash
 ENV PATH="/root/.local/share/mise/bin:/root/.local/share/mise/shims:${PATH}"
 
-# Install Elixir/Erlang as specified in .tool-versions (if present)
-COPY .tool-versions /workspaces/.tool-versions
-RUN cd /workspaces && \
-    if [ -f .tool-versions ]; then mise install; fi
-
 # Set default workdir
 WORKDIR /workspaces
-
-# Install Hex and Rebar (Elixir build tools)
-RUN if command -v elixir >/dev/null 2>&1; then \
-      mix local.hex --force && \
-      mix local.rebar --force; \
-    fi
-
-# Set up recommended VS Code extensions
-RUN mkdir -p /workspaces/.vscode && \
-    echo '{
-  "recommendations": [
-    "jakebecker.elixir-ls",
-    "ms-azuretools.vscode-docker"
-  ]
-}' > /workspaces/.vscode/extensions.json
 
 # Expose default Phoenix port
 EXPOSE 4000
