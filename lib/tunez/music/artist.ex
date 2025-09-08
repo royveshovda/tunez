@@ -63,4 +63,14 @@ defmodule Tunez.Music.Artist do
     destroy :destroy do
     end
   end
+
+  aggregates do
+    count :album_count, :albums do
+      public? true
+    end
+    first :latest_album_year_released, :albums, :year_released do
+      public? true
+    end
+    first :cover_image_url, :albums, :cover_image_url
+  end
 end
