@@ -3,10 +3,12 @@ defmodule Tunez.Music.Artist do
     otp_app: :tunez,
     domain: Tunez.Music,
     data_layer: AshPostgres.DataLayer,
-    extensions: [AshJsonApi.Resource]
+    extensions: [AshGraphql.Resource, AshJsonApi.Resource]
 
-  resource do
-    description "A person or group of people that makes and releases music."
+  graphql do
+    type :artist
+    filterable_fields [:album_count, :cover_image_url, :inserted_at,
+      :latest_album_year_released, :updated_at]
   end
 
   json_api do
@@ -22,6 +24,10 @@ defmodule Tunez.Music.Artist do
     custom_indexes do
       index "name gin_trgm_ops", name: "artists_name_gin_index", using: "GIN"
     end
+  end
+
+  resource do
+    description "A person or group of people that makes and releases music."
   end
 
   actions do
