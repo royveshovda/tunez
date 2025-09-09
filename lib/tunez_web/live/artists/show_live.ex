@@ -147,15 +147,18 @@ defmodule TunezWeb.Artists.ShowLive do
           socket
           |> put_flash(:info, "Artist deleted successfully")
           |> push_navigate(to: ~p"/")
+
         {:noreply, socket}
+
       {:error, error} ->
         Logger.info("Could not delete artist '#{socket.assigns.artist.id}':
         #{inspect(error)}")
+
         socket =
           socket
           |> put_flash(:error, "Could not delete artist")
-        {:noreply, socket}
 
+        {:noreply, socket}
     end
   end
 
@@ -170,12 +173,16 @@ defmodule TunezWeb.Artists.ShowLive do
             end)
           end)
           |> put_flash(:info, "Album deleted successfully")
+
         {:noreply, socket}
+
       {:error, error} ->
         Logger.info("Could not delete album '#{album_id}': #{inspect(error)}")
+
         socket =
           socket
           |> put_flash(:error, "Could not delete album")
+
         {:noreply, socket}
     end
   end

@@ -12,15 +12,15 @@ defmodule TunezWeb.Artists.IndexLive do
   end
 
   def handle_params(params, _url, socket) do
-    sort_by = Map.get(params,"sort_by") |> validate_sort_by()
-    query_text = Map.get(params,"q", "")
+    sort_by = Map.get(params, "sort_by") |> validate_sort_by()
+    query_text = Map.get(params, "q", "")
     page_params = AshPhoenix.LiveView.page_from_params(params, 12)
 
     page =
       Tunez.Music.search_artists!(query_text,
-          page: page_params,
-          query: [sort_input: sort_by],
-          load: [:album_count, :latest_album_year_released, :cover_image_url]
+        page: page_params,
+        query: [sort_input: sort_by],
+        load: [:album_count, :latest_album_year_released, :cover_image_url]
       )
 
     socket =
@@ -39,8 +39,7 @@ defmodule TunezWeb.Artists.IndexLive do
         <.h1>Artists</.h1>
         <:action><.sort_changer selected={@sort_by} /></:action>
         <:action>
-          <.search_box query={@query_text} method="get"
-                         data-role="artist-search" phx-submit="search" />
+          <.search_box query={@query_text} method="get" data-role="artist-search" phx-submit="search" />
         </:action>
         <:action>
           <.button_link navigate={~p"/artists/new"} kind="primary">
@@ -59,8 +58,7 @@ defmodule TunezWeb.Artists.IndexLive do
           <.artist_card artist={artist} />
         </li>
       </ul>
-      <.pagination_links page={@page} query_text={@query_text}
-            sort_by={@sort_by} />
+      <.pagination_links page={@page} query_text={@query_text} sort_by={@sort_by} />
     </Layouts.app>
     """
   end
@@ -117,17 +115,25 @@ defmodule TunezWeb.Artists.IndexLive do
   def pagination_links(assigns) do
     ~H"""
     <div
-      :if={AshPhoenix.LiveView.prev_page?(@page) ||
-           AshPhoenix.LiveView.next_page?(@page)}
+      :if={
+        AshPhoenix.LiveView.prev_page?(@page) ||
+          AshPhoenix.LiveView.next_page?(@page)
+      }
       class="flex justify-center pt-8 space-x-4"
     >
-      <.button_link data-role="previous-page" kind="primary" inverse
+      <.button_link
+        data-role="previous-page"
+        kind="primary"
+        inverse
         patch={~p"/?#{query_string(@page, @query_text, @sort_by, "prev")}"}
         disabled={!AshPhoenix.LiveView.prev_page?(@page)}
       >
         « Previous
       </.button_link>
-      <.button_link data-role="next-page" kind="primary" inverse
+      <.button_link
+        data-role="next-page"
+        kind="primary"
+        inverse
         patch={~p"/?#{query_string(@page, @query_text, @sort_by, "next")}"}
         disabled={!AshPhoenix.LiveView.next_page?(@page)}
       >

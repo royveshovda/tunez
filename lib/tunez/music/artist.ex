@@ -7,8 +7,14 @@ defmodule Tunez.Music.Artist do
 
   graphql do
     type :artist
-    filterable_fields [:album_count, :cover_image_url, :inserted_at,
-      :latest_album_year_released, :updated_at]
+
+    filterable_fields [
+      :album_count,
+      :cover_image_url,
+      :inserted_at,
+      :latest_album_year_released,
+      :updated_at
+    ]
   end
 
   json_api do
