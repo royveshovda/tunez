@@ -20,7 +20,6 @@ defmodule TunezWeb.Artists.IndexLive do
       Tunez.Music.search_artists!(query_text,
         page: page_params,
         query: [sort_input: sort_by],
-        load: [:album_count, :latest_album_year_released, :cover_image_url],
         actor: socket.assigns.current_user
       )
 
@@ -162,6 +161,16 @@ defmodule TunezWeb.Artists.IndexLive do
       {render_slot(@inner_block)}
     </form>
     """
+  end
+
+  def query_string(page, query_text, sort_by, which) do
+    case AshPhoenix.LiveView.page_link_params(page, which) do
+      :invalid -> []
+      list -> list
+    end
+    |> Keyword.put(:q, query_text)
+    |> Keyword.put(:sort_by, sort_by)
+    |> remove_empty()
   end
 
   def sort_changer(assigns) do

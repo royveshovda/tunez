@@ -2,15 +2,11 @@ defmodule TunezWeb.Albums.FormLive do
   use TunezWeb, :live_view
 
   def mount(%{"id" => album_id}, _session, socket) do
-    album = Tunez.Music.get_album_by_id!(album_id,
-      load: [:artist],
-      actor: socket.assigns.current_user
-    )
+    album =
+      Tunez.Music.get_album_by_id!(album_id, load: [:artist], actor: socket.assigns.current_user)
+
     form =
-      Tunez.Music.form_to_update_album(
-        album,
-        actor: socket.assigns.current_user
-      )
+      Tunez.Music.form_to_update_album(album, actor: socket.assigns.current_user)
       |> AshPhoenix.Form.ensure_can_submit!()
 
     socket =
@@ -23,14 +19,10 @@ defmodule TunezWeb.Albums.FormLive do
   end
 
   def mount(%{"artist_id" => artist_id}, _session, socket) do
-    artist = Tunez.Music.get_artist_by_id!(artist_id,
-      actor: socket.assigns.current_user
-    )
+    artist = Tunez.Music.get_artist_by_id!(artist_id, actor: socket.assigns.current_user)
+
     form =
-      Tunez.Music.form_to_create_album(
-        artist.id,
-        actor: socket.assigns.current_user
-      )
+      Tunez.Music.form_to_create_album(artist.id, actor: socket.assigns.current_user)
       |> AshPhoenix.Form.ensure_can_submit!()
 
     socket =
@@ -57,7 +49,7 @@ defmodule TunezWeb.Albums.FormLive do
         phx-change="validate"
         phx-submit="save"
       >
-        <.input name="artist_id" label="Artist" value="" disabled />
+        <.input name="artist_id" label="Artist" value={@artist.name} disabled />
         <div class="sm:flex gap-8 space-y-8 md:space-y-0">
           <div class="sm:w-3/4"><.input field={form[:name]} label="Name" /></div>
           <div class="sm:w-1/4">

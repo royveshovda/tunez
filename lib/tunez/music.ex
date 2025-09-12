@@ -1,7 +1,5 @@
 defmodule Tunez.Music do
-  use Ash.Domain,
-    otp_app: :tunez,
-    extensions: [AshGraphql.Domain, AshJsonApi.Domain, AshPhoenix]
+  use Ash.Domain, otp_app: :tunez, extensions: [AshGraphql.Domain, AshJsonApi.Domain, AshPhoenix]
 
   graphql do
     queries do

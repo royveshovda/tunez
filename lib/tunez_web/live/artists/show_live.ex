@@ -50,8 +50,11 @@ defmodule TunezWeb.Artists.ShowLive do
       </.header>
       <div class="mb-6">{formatted(@artist.biography)}</div>
 
-      <.button_link navigate={~p"/artists/#{@artist.id}/albums/new"} kind="primary"
-        :if={Tunez.Music.can_create_album?(@current_user)}>
+      <.button_link
+        :if={Tunez.Music.can_create_album?(@current_user)}
+        navigate={~p"/artists/#{@artist.id}/albums/new"}
+        kind="primary"
+      >
         New Album
       </.button_link>
 
@@ -146,10 +149,7 @@ defmodule TunezWeb.Artists.ShowLive do
   end
 
   def handle_event("destroy-artist", _params, socket) do
-    case Tunez.Music.destroy_artist(
-      socket.assigns.artist,
-      actor: socket.assigns.current_user
-    ) do
+    case Tunez.Music.destroy_artist(socket.assigns.artist, actor: socket.assigns.current_user) do
       :ok ->
         socket =
           socket
@@ -159,8 +159,7 @@ defmodule TunezWeb.Artists.ShowLive do
         {:noreply, socket}
 
       {:error, error} ->
-        Logger.info("Could not delete artist '#{socket.assigns.artist.id}':
-        #{inspect(error)}")
+        Logger.info("Could not delete artist '#{socket.assigns.artist.id}': #{inspect(error)}")
 
         socket =
           socket
@@ -171,10 +170,7 @@ defmodule TunezWeb.Artists.ShowLive do
   end
 
   def handle_event("destroy-album", %{"id" => album_id}, socket) do
-    case Tunez.Music.destroy_album(
-      album_id,
-      actor: socket.assigns.current_user
-    ) do
+    case Tunez.Music.destroy_album(album_id, actor: socket.assigns.current_user) do
       :ok ->
         socket =
           socket

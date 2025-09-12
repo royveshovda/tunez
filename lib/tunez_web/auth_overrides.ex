@@ -51,5 +51,4 @@ defmodule TunezWeb.AuthOverrides do
       "rounded-lg font-medium leading-none block cursor-pointer"
     ]
   end
-
 end
