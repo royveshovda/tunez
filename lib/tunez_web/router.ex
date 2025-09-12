@@ -74,7 +74,6 @@ defmodule TunezWeb.Router do
 
   scope "/", TunezWeb do
     pipe_through :browser
-
     auth_routes AuthController, Tunez.Accounts.User, path: "/auth"
     sign_out_route AuthController
 

@@ -1,6 +1,5 @@
 defmodule TunezWeb.AuthOverrides do
   use AshAuthentication.Phoenix.Overrides
-
   alias AshAuthentication.Phoenix.Components
 
   override Components.Banner do

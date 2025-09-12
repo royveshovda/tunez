@@ -46,12 +46,12 @@ defmodule Tunez.Music.Artist do
 
       argument :query, :ci_string do
         description "Return only artists with names including the given value."
+        main
         constraints allow_empty?: true
         default ""
       end
 
       filter expr(contains(name, ^arg(:query)))
-
       pagination offset?: true, default_limit: 12
     end
 
@@ -94,6 +94,7 @@ defmodule Tunez.Music.Artist do
       allow_nil? false
       public? true
     end
+
 
     attribute :previous_names, {:array, :string} do
       default []

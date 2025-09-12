@@ -1,0 +1,32 @@
+{
+  "name": "Elixir Dev Container (mise)",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "features": {
+    "ghcr.io/itsmechlark/features/postgresql:1": {},
+    "ghcr.io/rocker-org/devcontainer-features/apt-packages:1": {
+      "packages": "curl,git,unzip,build-essential,libssl-dev,automake,autoconf,libncurses5-dev,inotify-tools"
+    },
+    "ghcr.io/devcontainers-extra/features/mise:1": {}
+  },
+  "hostRequirements": {
+    "cpus": 8,
+    "memory": "32gb",
+    "storage": "64gb"
+  },
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.shell.linux": "/bin/bash"
+      },
+      "extensions": [
+        "jakebecker.elixir-ls",
+        "ms-azuretools.vscode-docker",
+        "hverlin.mise-vscode"
+      ]
+    }
+  },
+  "postCreateCommand": "chmod +x .devcontainer/setup-mise.sh && .devcontainer/setup-mise.sh",
+  "remoteUser": "root"
+}

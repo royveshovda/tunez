@@ -58,7 +58,6 @@ defmodule TunezWeb.Artists.IndexLive do
           <.artist_card artist={artist} />
         </li>
       </ul>
-
       <.pagination_links page={@page} query_text={@query_text} sort_by={@sort_by} />
     </Layouts.app>
     """
@@ -80,7 +79,6 @@ defmodule TunezWeb.Artists.IndexLive do
         {@artist.name}
       </.link>
     </p>
-
     <.artist_card_album_info artist={@artist} />
     """
   end
@@ -234,5 +232,15 @@ defmodule TunezWeb.Artists.IndexLive do
       n when n >= 1_000 -> "#{Float.round(n / 1_000, 1)}K"
       n -> n
     end
+  end
+
+  def query_string(page, query_text, sort_by, which) do
+    case AshPhoenix.LiveView.page_link_params(page, which) do
+      :invalid -> []
+      list -> list
+    end
+    |> Keyword.put(:q, query_text)
+    |> Keyword.put(:sort_by, sort_by)
+    |> remove_empty()
   end
 end
