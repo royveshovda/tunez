@@ -70,6 +70,10 @@ defmodule Tunez.Accounts.User do
   actions do
     defaults [:read]
 
+    update :set_role do
+      accept [:role]
+    end
+
     read :get_by_subject do
       description "Get a user by the subject claim in a JWT"
       argument :subject, :string, allow_nil?: false
@@ -295,6 +299,11 @@ defmodule Tunez.Accounts.User do
     end
 
     attribute :confirmed_at, :utc_datetime_usec
+
+    attribute :role, Tunez.Accounts.Role do
+      allow_nil? false
+      default :user
+    end
   end
 
   identities do
