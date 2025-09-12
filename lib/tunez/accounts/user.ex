@@ -284,6 +284,10 @@ defmodule Tunez.Accounts.User do
     policy action([:register_with_password, :sign_in_with_password]) do
       authorize_if always()
     end
+
+    policy action(:read) do
+      authorize_if expr(id == ^actor(:id))
+    end
   end
 
   attributes do
@@ -298,12 +302,12 @@ defmodule Tunez.Accounts.User do
       sensitive? true
     end
 
-    attribute :confirmed_at, :utc_datetime_usec
-
     attribute :role, Tunez.Accounts.Role do
       allow_nil? false
       default :user
     end
+
+    attribute :confirmed_at, :utc_datetime_usec
   end
 
   identities do
