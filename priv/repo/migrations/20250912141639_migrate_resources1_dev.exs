@@ -1,4 +1,4 @@
-defmodule Tunez.Repo.Migrations.AddUserLinksToArtistsAndAlbums do
+defmodule Tunez.Repo.Migrations.MigrateResources1 do
   @moduledoc """
   Updates resources based on their most recent snapshots.
 
@@ -8,11 +8,11 @@ defmodule Tunez.Repo.Migrations.AddUserLinksToArtistsAndAlbums do
   use Ecto.Migration
 
   def up do
-    alter table(:albums) do
+    alter table(:artists) do
       add :created_by_id,
           references(:users,
             column: :id,
-            name: "albums_created_by_id_fkey",
+            name: "artists_created_by_id_fkey",
             type: :uuid,
             prefix: "public"
           )
@@ -20,7 +20,7 @@ defmodule Tunez.Repo.Migrations.AddUserLinksToArtistsAndAlbums do
       add :updated_by_id,
           references(:users,
             column: :id,
-            name: "albums_updated_by_id_fkey",
+            name: "artists_updated_by_id_fkey",
             type: :uuid,
             prefix: "public"
           )
@@ -28,11 +28,11 @@ defmodule Tunez.Repo.Migrations.AddUserLinksToArtistsAndAlbums do
   end
 
   def down do
-    drop constraint(:albums, "albums_created_by_id_fkey")
+    drop constraint(:artists, "artists_created_by_id_fkey")
 
-    drop constraint(:albums, "albums_updated_by_id_fkey")
+    drop constraint(:artists, "artists_updated_by_id_fkey")
 
-    alter table(:albums) do
+    alter table(:artists) do
       remove :updated_by_id
       remove :created_by_id
     end
