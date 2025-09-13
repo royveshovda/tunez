@@ -45,13 +45,13 @@ defmodule Tunez.Accounts.ArtistFollowerTest do
   end
 
   describe "policies" do
-    # def setup_users do
-    #   %{
-    #     admin: generate(user(role: :admin)),
-    #     editor: generate(user(role: :editor)),
-    #     user: generate(user(role: :user))
-    #   }
-    # end
+    def setup_users do
+      %{
+        admin: generate(user(role: :admin)),
+        editor: generate(user(role: :editor)),
+        user: generate(user(role: :user))
+      }
+    end
 
     @tag skip: "can be enabled during chapter 9. Also uncomment the `setup_users` function above"
     test "all authenticated users can follow artists" do
