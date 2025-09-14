@@ -5,7 +5,7 @@ defmodule Tunez.Music.ArtistTest do
 
   describe "Tunez.Music.read_artists!/0-2" do
     test "when there is no data, nothing is returned" do
-      # assert Music.read_artists!() == []
+      assert Music.read_artists!() == []
     end
   end
 
@@ -13,119 +13,119 @@ defmodule Tunez.Music.ArtistTest do
     def names(page), do: Enum.map(page.results, & &1.name)
 
     test "can filter by partial name matches" do
-      # ["hello", "goodbye", "what?"]
-      # |> Enum.each(&generate(artist(name: &1)))
+      ["hello", "goodbye", "what?"]
+      |> Enum.each(&generate(artist(name: &1)))
 
-      # assert Enum.sort(names(Music.search_artists!("o"))) == ["goodbye", "hello"]
-      # assert names(Music.search_artists!("oo")) == ["goodbye"]
-      # assert names(Music.search_artists!("he")) == ["hello"]
+      assert Enum.sort(names(Music.search_artists!("o"))) == ["goodbye", "hello"]
+      assert names(Music.search_artists!("oo")) == ["goodbye"]
+      assert names(Music.search_artists!("he")) == ["hello"]
     end
 
     test "can sort by name" do
-      # ["first", "third", "fourth", "second"]
-      # |> Enum.each(&generate(artist(name: &1)))
+      ["first", "third", "fourth", "second"]
+      |> Enum.each(&generate(artist(name: &1)))
 
-      # actual = names(Music.search_artists!("", query: [sort_input: "+name"]))
-      # assert actual == ["first", "fourth", "second", "third"]
+      actual = names(Music.search_artists!("", query: [sort_input: "+name"]))
+      assert actual == ["first", "fourth", "second", "third"]
     end
 
     test "can sort by creation time" do
-      # generate(artist(seed?: true, name: "first", inserted_at: ago(30, :second)))
-      # generate(artist(seed?: true, name: "third", inserted_at: ago(10, :second)))
-      # generate(artist(seed?: true, name: "second", inserted_at: ago(20, :second)))
+      generate(artist(seed?: true, name: "first", inserted_at: ago(30, :second)))
+      generate(artist(seed?: true, name: "third", inserted_at: ago(10, :second)))
+      generate(artist(seed?: true, name: "second", inserted_at: ago(20, :second)))
 
-      # actual = names(Music.search_artists!("", query: [sort_input: "-inserted_at"]))
-      # assert actual == ["third", "second", "first"]
+      actual = names(Music.search_artists!("", query: [sort_input: "-inserted_at"]))
+      assert actual == ["third", "second", "first"]
     end
 
     test "can sort by update time" do
-      # generate(artist(seed?: true, name: "first", updated_at: ago(30, :second)))
-      # generate(artist(seed?: true, name: "third", updated_at: ago(10, :second)))
-      # generate(artist(seed?: true, name: "second", updated_at: ago(20, :second)))
+      generate(artist(seed?: true, name: "first", updated_at: ago(30, :second)))
+      generate(artist(seed?: true, name: "third", updated_at: ago(10, :second)))
+      generate(artist(seed?: true, name: "second", updated_at: ago(20, :second)))
 
-      # actual = names(Music.search_artists!("", query: [sort_input: "-updated_at"]))
-      # assert actual == ["third", "second", "first"]
+      actual = names(Music.search_artists!("", query: [sort_input: "-updated_at"]))
+      assert actual == ["third", "second", "first"]
     end
 
     test "can sort by latest album release" do
-      # first = generate(artist(name: "first"))
-      # generate(album(year_released: 2023, artist_id: first.id))
+      first = generate(artist(name: "first"))
+      generate(album(year_released: 2023, artist_id: first.id))
 
-      # third = generate(artist(name: "third"))
-      # generate(album(year_released: 2008, artist_id: third.id))
+      third = generate(artist(name: "third"))
+      generate(album(year_released: 2008, artist_id: third.id))
 
-      # second = generate(artist(name: "second"))
-      # generate(album(year_released: 2012, artist_id: second.id))
+      second = generate(artist(name: "second"))
+      generate(album(year_released: 2012, artist_id: second.id))
 
-      # actual =
-      #   names(Music.search_artists!("", query: [sort_input: "--latest_album_year_released"]))
+      actual =
+        names(Music.search_artists!("", query: [sort_input: "--latest_album_year_released"]))
 
-      # assert actual == ["first", "second", "third"]
+      assert actual == ["first", "second", "third"]
     end
 
     test "can sort by number of album releases" do
-      # generate(artist(name: "two", album_count: 2))
-      # generate(artist(name: "none"))
-      # generate(artist(name: "one", album_count: 1))
-      # generate(artist(name: "three", album_count: 3))
+      generate(artist(name: "two", album_count: 2))
+      generate(artist(name: "none"))
+      generate(artist(name: "one", album_count: 1))
+      generate(artist(name: "three", album_count: 3))
 
-      # actual =
-      #   names(Music.search_artists!("", query: [sort_input: "-album_count"]))
+      actual =
+        names(Music.search_artists!("", query: [sort_input: "-album_count"]))
 
-      # assert actual == ["three", "two", "one", "none"]
+      assert actual == ["three", "two", "one", "none"]
     end
 
     test "can paginate search results" do
-      # generate_many(artist(), 2)
+      generate_many(artist(), 2)
 
-      # page = Music.search_artists!("", page: [limit: 1])
-      # assert length(page.results) == 1
-      # assert page.more?
+      page = Music.search_artists!("", page: [limit: 1])
+      assert length(page.results) == 1
+      assert page.more?
 
-      # next_page = Ash.page!(page, :next)
-      # assert length(page.results) == 1
-      # refute next_page.more?
+      next_page = Ash.page!(page, :next)
+      assert length(page.results) == 1
+      refute next_page.more?
     end
   end
 
   describe "Tunez.Music.create_artist/1-2" do
     test "stores the actor that created the record" do
-      # actor = generate(user(role: :admin))
+      actor = generate(user(role: :admin))
 
-      # artist = Music.create_artist!(%{name: "New Artist"}, actor: actor)
-      # assert artist.created_by_id == actor.id
-      # assert artist.updated_by_id == actor.id
+      artist = Music.create_artist!(%{name: "New Artist"}, actor: actor)
+      assert artist.created_by_id == actor.id
+      assert artist.updated_by_id == actor.id
     end
   end
 
   describe "Tunez.Music.update_artist/2-3" do
     test "collects old names when the artist name changes" do
-      # actor = generate(user(role: :admin))
+      actor = generate(user(role: :admin))
 
-      # artist = generate(artist(name: "First Name"))
-      # assert artist.previous_names == []
+      artist = generate(artist(name: "First Name"))
+      assert artist.previous_names == []
 
-      # # First Name is moved to previous_names
-      # artist = Music.update_artist!(artist, %{name: "Second Name"}, actor: actor)
-      # assert artist.previous_names == ["First Name"]
+      # First Name is moved to previous_names
+      artist = Music.update_artist!(artist, %{name: "Second Name"}, actor: actor)
+      assert artist.previous_names == ["First Name"]
 
-      # # Second Name is added to previous names
-      # artist = Music.update_artist!(artist, %{name: "Third Name"}, actor: actor)
-      # assert artist.previous_names == ["Second Name", "First Name"]
+      # Second Name is added to previous names
+      artist = Music.update_artist!(artist, %{name: "Third Name"}, actor: actor)
+      assert artist.previous_names == ["Second Name", "First Name"]
 
-      # # First Name is now the current name again, not a previous name
-      # artist = Music.update_artist!(artist, %{name: "First Name"}, actor: actor)
-      # assert artist.previous_names == ["Third Name", "Second Name"]
+      # First Name is now the current name again, not a previous name
+      artist = Music.update_artist!(artist, %{name: "First Name"}, actor: actor)
+      assert artist.previous_names == ["Third Name", "Second Name"]
     end
 
     test "stores the actor that updated the record" do
-      # actor = generate(user(role: :admin))
+      actor = generate(user(role: :admin))
 
-      # artist = generate(artist(name: "First Name"))
-      # refute artist.updated_by_id == actor.id
+      artist = generate(artist(name: "First Name"))
+      refute artist.updated_by_id == actor.id
 
-      # artist = Music.update_artist!(artist, %{name: "Second Name"}, actor: actor)
-      # assert artist.updated_by_id == actor.id
+      artist = Music.update_artist!(artist, %{name: "Second Name"}, actor: actor)
+      assert artist.updated_by_id == actor.id
     end
   end
 

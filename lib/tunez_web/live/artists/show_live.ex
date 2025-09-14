@@ -10,7 +10,7 @@ defmodule TunezWeb.Artists.ShowLive do
   def handle_params(%{"id" => artist_id}, _url, socket) do
     artist =
       Tunez.Music.get_artist_by_id!(artist_id,
-        load: [:albums],
+        load: [albums: [:duration, :tracks]],
         actor: socket.assigns.current_user
       )
 
@@ -77,6 +77,7 @@ defmodule TunezWeb.Artists.ShowLive do
         <.header class="pl-3 pr-2 !m-0">
           <.h2>
             {@album.name} ({@album.year_released})
+            <span :if={@album.duration} class="text-base">({@album.duration})</span>
           </.h2>
           <:action :if={Tunez.Music.can_destroy_album?(@current_user, @album)}>
             <.button_link
@@ -96,7 +97,7 @@ defmodule TunezWeb.Artists.ShowLive do
             </.button_link>
           </:action>
         </.header>
-        <.track_details tracks={[]} />
+        <.track_details tracks={@album.tracks} />
       </div>
     </div>
     """
@@ -107,10 +108,10 @@ defmodule TunezWeb.Artists.ShowLive do
     <table :if={@tracks != []} class="w-full mt-2 -z-10">
       <tr :for={track <- @tracks} class="border-t first:border-0 border-gray-100">
         <th class="whitespace-nowrap w-1 p-3">
-          {String.pad_leading("#{track.order}", 2, "0")}.
+          {String.pad_leading("#{track.number}", 2, "0")}.
         </th>
         <td class="p-3">{track.name}</td>
-        <td class="whitespace-nowrap w-1 text-right p-2">{track.duration_seconds}</td>
+        <td class="whitespace-nowrap w-1 text-right p-2">{track.duration}</td>
       </tr>
     </table>
     <div :if={@tracks == []} class="p-8 text-center italic text-gray-400">
